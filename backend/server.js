@@ -1,4 +1,5 @@
 const express = require('express')
+// var bodyParser = require('body-parser')
 const app = express();
 const cors = require("cors");
 const expressSanitizer = require("express-sanitizer")
@@ -10,6 +11,10 @@ let corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use(expressSanitizer())
+app.use("/imagepro", express.static(path.join(__dirname, './image')))
+app.use(express.json({limit: '3mb'}))
+app.use(express.urlencoded({limit: '3mb', extended: true}))
+// app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use('/api', require('./api/api'))
 
