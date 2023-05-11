@@ -87,7 +87,7 @@ router.post("/jdb/employee/update", function (req,res){
 
 //show all employees
 router.get("/jdb/employees", function (req,res) {
-    db.query("SELECT e.emp_name, e.profile, e.salary , d.dep_name FROM tbl_department d JOIN tbl_employees e ON e.dep_uuid = d.dep_uuid", function(err, rs){
+    db.query("SELECT ROW_NUMBER() OVER(ORDER BY e.id) AS ID,e.emp_uuid,e.emp_name, e.profile, e.salary , d.dep_name FROM tbl_department d JOIN tbl_employees e ON e.dep_uuid = d.dep_uuid", function(err, rs){
         if (err) throw err
 
         if (rs.length > 0) {

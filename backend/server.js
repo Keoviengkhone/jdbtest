@@ -11,7 +11,7 @@ let corsOptions = {
 }
 app.use(cors(corsOptions))
 app.use(expressSanitizer())
-app.use("/imagepro", express.static(path.join(__dirname, './image')))
+app.use("/", express.static(path.join(__dirname, './image'))) // show image in http
 app.use(express.json({limit: '3mb'}))
 app.use(express.urlencoded({limit: '3mb', extended: true}))
 // app.use(bodyParser.urlencoded({ extended: true }))
