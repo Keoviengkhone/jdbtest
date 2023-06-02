@@ -20,4 +20,18 @@ router.post("/jdb/department/add", function(req,res){
     })
 })
 
+router.get("/jdb/department", function(req, res){
+    let sql = "SELECT  dep_uuid,dep_name FROM `tbl_department`"
+
+    db.query(sql, function(err, rs){
+        if (err) throw err
+
+        if (rs.length > 0) {
+            res.json(rs)
+        }else {
+            res.status(404).json({status: "error", message: "Not Found"})
+        }
+    })
+})
+
 module.exports = router;

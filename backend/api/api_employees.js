@@ -34,13 +34,13 @@ router.post("/jdb/employees/add", function (req, res) {
         db.query(sql, [values], function(err, rs){
             if(err) throw err;
             
-            res.json({status: "Success!!", message: "Add employees Success!!"})
+            res.json({status: "ok", message: "Add employees Success!!"})
         })
     })
 })
 
 //Update employees
-router.post("/jdb/employee/update", function (req,res){
+router.put("/jdb/employee/update", function (req,res){
     let img_profile = "";
     const storage = multer.diskStorage({
         destination: function(req, file, cb){
@@ -79,7 +79,7 @@ router.post("/jdb/employee/update", function (req,res){
         db.query(sql, [values, emp_uuid], function(err, rs){
             if(err) throw err;
             
-            res.json({status: "Success!!", message: "Update employees Success!!"})
+            res.json({status: "ok", message: "Update employees Success!!"})
         })
     })
 
@@ -87,7 +87,7 @@ router.post("/jdb/employee/update", function (req,res){
 
 //show all employees
 router.get("/jdb/employees", function (req,res) {
-    db.query("SELECT ROW_NUMBER() OVER(ORDER BY e.id) AS ID,e.emp_uuid,e.emp_name, e.profile, e.salary , d.dep_name FROM tbl_department d JOIN tbl_employees e ON e.dep_uuid = d.dep_uuid", function(err, rs){
+    db.query("SELECT ROW_NUMBER() OVER(ORDER BY e.id) AS ID,e.emp_uuid, e.profile ,e.emp_name, e.salary , d.dep_name FROM tbl_department d JOIN tbl_employees e ON e.dep_uuid = d.dep_uuid", function(err, rs){
         if (err) throw err
 
         if (rs.length > 0) {
@@ -104,7 +104,7 @@ router.get("/jdb/employees/:uuid", function (req,res) {
     const uuid = req.sanitize(req.params.uuid)
     console.log(uuid)
 
-    let sql = "SELECT e.emp_name, e.profile, e.salary , d.dep_name FROM tbl_department d JOIN tbl_employees e ON e.dep_uuid = d.dep_uuid WHERE e.emp_uuid = ? "
+    let sql = "SELECT e.emp_name, e.profile, e.salary , d.dep_name, d.dep_uuid FROM tbl_department d JOIN tbl_employees e ON e.dep_uuid = d.dep_uuid WHERE e.emp_uuid = ? "
     db.query(sql, [uuid], function(err, rs){
         if (err) throw err
 
@@ -118,12 +118,12 @@ router.get("/jdb/employees/:uuid", function (req,res) {
 })
 
 //Delete Employee
-router.post("/jdb/employee/delete", function(req,res){
+router.delete("/jdb/employee/delete", function(req,res){
     const uuid = req.sanitize(req.body.uuid)
     let sql = "DELETE FROM tbl_employees WHERE emp_uuid = ?"
     db.query(sql, [uuid], function(err, rs){
         if (err) throw err
-        res.json({status: "success", message: "Delete success"})
+        res.json({status: "ok", message: "Delete success"})
     })
 })
 
